@@ -2,7 +2,7 @@ import { Container, Grid, Paper, styled, Button } from "@mui/material";
 import React, { useState } from "react";
 import { GridDigitButton } from "./GridDigitButton";
 import { GridOperationButton } from "./GridOperationButton";
-import axois from "axois";
+import axios from "axios";
 
 const OutputContainer = styled("div")(({ theme }) => ({
   width: "100%",
@@ -29,40 +29,13 @@ function App() {
     const curr = parseFloat(currentValue);
     const prev = parseFloat(prevValue);
 
-    let result: number = 0;
-
-    // switch (operation) {
-    //   case "/":
-    //     result = prev / curr;
-    //     break;
-    //   case "*":
-    //     result = prev * curr;
-    //     break;
-    //   case "-":
-    //     result = prev - curr;
-    //     break;
-    //   case "+":
-    //     result = prev + curr;
-    //     break;
-    // }
-    var data = new FormData();
-    data.append("a", "6");
-    data.append("b", "5");
-    data.append("c", "*");
-
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.addEventListener("readystatechange", function () {
-      if (this.readyState === 4) {
-        console.log(this.responseText);
-      }
-    });
-
-    xhr.open("POST", "http://127.0.0.1:5000");
-
-    xhr.send(data);
-    return result;
+    axios
+      .post("http://localhost:5000", {
+        prev: prev,
+        curr: curr,
+        operation: encodeURIComponent(operation),
+      })
+      .then((res: any) => console.log(res.data));
   };
 
   const equals = () => {
